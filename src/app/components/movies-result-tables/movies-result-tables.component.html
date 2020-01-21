@@ -1,0 +1,52 @@
+<ng-container *ngIf="moviesObservable$ | async">
+  <h2 >Searched movie collection</h2>
+<!--    <ng-container *ngIf="movies.Search && movies.Search.length > 0; else elseBlock">-->
+      <p-table
+        selectionMode="single"
+        [(selection)]="selectedMovie"
+        [value]="moviesObservable$ | async"
+        [columns]="cols"
+        [scrollable]="true"
+        (onRowSelect)="onRowSelect($event)"
+        dataKey="imdbID">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns">
+              {{col.header}}
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="colgroup">
+          <colgroup>
+            <col class="poster-column">
+            <col>
+            <col class="year-column">
+          </colgroup>
+        </ng-template>
+        <ng-template pTemplate="body" let-movie let-columns="columns">
+          <tr [pSelectableRow]="movie">
+            <td *ngFor="let col of columns">
+              <ng-container *ngIf="col.field ==='Poster'">
+                <img *ngIf="movie[col.field] !== 'N/A'; else emptyPoster"
+                     [src]="movie[col.field]" alt="">
+              </ng-container>
+              <ng-container *ngIf="col.field !=='Poster'">
+                {{movie[col.field]}}
+<!--                <a [routerLink]="['details']" class="btn btn-success btn-lg">{{movie[col.field]}}</a>-->
+              </ng-container>
+            </td>
+          </tr>
+        </ng-template>
+<!--        <ng-template pTemplate="summary">-->
+<!--          <div style="text-align: left">-->
+<!--            Selected Car: {{selectedMovie ? selectedMovie.imdbID : 'none'}}-->
+<!--          </div>-->
+<!--        </ng-template>-->
+      </p-table>
+<!--    </ng-container>-->
+  </ng-container>
+<ng-template #elseBlock>No results was found. Please set movie title in search box.</ng-template>
+<ng-template #emptyPoster>
+  <img src="https://toptvseries.org/wp-content/uploads/2019/08/noposter-.jpg"
+       alt="">
+</ng-template>

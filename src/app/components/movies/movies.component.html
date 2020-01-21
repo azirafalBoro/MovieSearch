@@ -1,0 +1,13 @@
+<h1>Find Movie</h1>
+<span class="ui-float-label">
+    <input #searchInput
+           id="float-input"
+           type="text"
+           size="120"
+           pInputText
+           (keyup)="onValueChange($event)">
+    <label for="float-input">Movie Title</label>
+</span>
+<app-movies-result-tables [movieTitle]="movieTitle"></app-movies-result-tables>
+<!--<app-movie-details></app-movie-details>-->
+

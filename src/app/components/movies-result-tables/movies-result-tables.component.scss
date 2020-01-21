@@ -1,0 +1,18 @@
+:host ::ng-deep {
+  tbody > tr > td {
+    img {
+      width: 100px;
+      height: 100px;
+    }
+
+    font-size: x-large;
+  }
+}
+
+.poster-column {
+  width: 140px;
+}
+
+.year-column {
+  width: 120px;
+}
