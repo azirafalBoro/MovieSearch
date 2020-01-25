@@ -4,7 +4,10 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import {Observable, Subject} from 'rxjs';
+import {Router} from '@angular/router';
+import {select, Store} from '@ngrx/store';
+import {updateSearch} from "../../movies.actions";
 
 @Component({
   selector: 'app-movies',
@@ -12,23 +15,29 @@ import { Subject } from 'rxjs';
   styleUrls: ['./movies.component.scss']
 })
 export class MoviesComponent implements OnInit, OnDestroy {
+  searchText$: Observable<string>;
   movieTitle = '';
   debounceTime = 400;
   changeValueSubject: Subject<string>;
 
   // @ViewChild('searchInput', {static: false}) input: ElementRef;
 
-  constructor() {
+  constructor(
+    private readonly store: Store<{movieTitle: string}>,
+    private readonly router: Router) {
+    this.searchText$ = store.pipe(select('movieTitle'));
   }
 
 
   ngOnInit() {
+    // this.searchText$ = this.store.select(selectGlobalSearchFilterText);
     this.changeValueSubject = new Subject<string>();
     this.changeValueSubject
       .pipe(
         debounceTime(this.debounceTime),
         distinctUntilChanged())
       .subscribe((value: string) => {
+        this.store.dispatch(updateSearch({filter: value}));
         this.movieTitle = value;
       });
   }
