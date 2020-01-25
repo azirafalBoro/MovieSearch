@@ -1,7 +1,6 @@
 import {Action, createReducer, on} from '@ngrx/store';
-import {updateSearch} from './movies.actions';
-
-// export const initialState = '';
+import {updateResult, updateSearch} from './movies.actions';
+import {SearchMovie} from './models/searchMovie';
 
 export interface MovieSearchFilterState {
   // pageNumber: number;
@@ -9,6 +8,7 @@ export interface MovieSearchFilterState {
   // sortedBy: ParameterSearchSorting
   // sortOrder: 'desc' | 'asc'
   filterByName: string;
+  result: SearchMovie;
   // items: SearchParameterResult[]
   // total: number;
 }
@@ -19,15 +19,27 @@ export const initialState: MovieSearchFilterState = {
   // sortedBy: 'parameterFullName',
   // sortOrder: 'asc',
   filterByName: '',
+  result: undefined
   // items: [],
   // total: 0,
 };
 
+export const globalSearchFeatureKey = 'searchedMovie';
+
 export const movieReducer = createReducer(
   initialState,
-  on(updateSearch, (state: MovieSearchFilterState, {filter}): MovieSearchFilterState => {
-    return {...state, filterByName: filter};
-  })
+  // on(updateSearch, (state: MovieSearchFilterState, {searchedMovie}): MovieSearchFilterState => {
+  //   return {...state, filterByName: searchedMovie};
+  // }),
+  on(updateSearch, (state: MovieSearchFilterState, action): MovieSearchFilterState => ({
+    ...state, filterByName: action.searchedMovie
+  })),
+  // on(updateResult, (state: MovieSearchFilterState, {searchedMovie}): MovieSearchFilterState => {
+  //   return {...state, result: searchedMovie};
+  // }),
+  on(updateResult, (state: MovieSearchFilterState, action): MovieSearchFilterState => ({
+    ...state, result: action.result
+  }))
 );
 
 export function reducer(state: MovieSearchFilterState , action: Action) {

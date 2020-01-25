@@ -1,3 +1,5 @@
+<ng-container *ngIf="movieResult$ | async as data">{{data.Search}}
+</ng-container>
 <ng-container *ngIf="moviesObservable$ | async">
   <h2 >Searched movie collection</h2>
 <!--    <ng-container *ngIf="movies.Search && movies.Search.length > 0; else elseBlock">-->

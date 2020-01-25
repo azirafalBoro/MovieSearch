@@ -1,12 +1,26 @@
 <h1>Find Movie</h1>
+<ng-container *ngIf="searchText$ | async as data"
+>{{data}}
+</ng-container>
+<div></div>
 <span class="ui-float-label">
-    <input #searchInput
-           id="float-input"
-           type="text"
-           size="120"
-           pInputText
-           (keyup)="onValueChange($event)">
-    <label for="float-input">Movie Title</label>
+<!--    <input #searchInput-->
+<!--           id="float-input"-->
+<!--           type="text"-->
+<!--           size="120"-->
+<!--           pInputText-->
+<!--           (keyup)="onValueChange($event)">-->
+<!--    <label for="float-input">Movie Title</label>-->
+        <input
+          id="input"
+          type="text"
+          size="120"
+          pInputText
+          [value]="searchText$ | async"
+          (keyup)="onValueChange($event)"
+          >
+<!--        <span id="text">{{text}}</span>-->
+<!--        <label for="input">Movie Title</label>-->
 </span>
 <app-movies-result-tables [movieTitle]="movieTitle"></app-movies-result-tables>
 <!--<app-movie-details></app-movie-details>-->

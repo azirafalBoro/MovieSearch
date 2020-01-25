@@ -1,4 +1,4 @@
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
 import {
   Component,
   OnDestroy,
@@ -6,8 +6,9 @@ import {
 } from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {Router} from '@angular/router';
-import {select, Store} from '@ngrx/store';
-import {updateSearch} from "../../movies.actions";
+import { Store} from '@ngrx/store';
+import {updateSearch} from '../../movies.actions';
+import {selectGlobalSearchFilterText} from '../../movie.selectors';
 
 @Component({
   selector: 'app-movies',
@@ -23,21 +24,22 @@ export class MoviesComponent implements OnInit, OnDestroy {
   // @ViewChild('searchInput', {static: false}) input: ElementRef;
 
   constructor(
-    private readonly store: Store<{movieTitle: string}>,
+    private readonly store: Store<{}>,
     private readonly router: Router) {
-    this.searchText$ = store.pipe(select('movieTitle'));
+    // this.searchText$ = store.pipe(select('filterByName'));
   }
 
 
   ngOnInit() {
-    // this.searchText$ = this.store.select(selectGlobalSearchFilterText);
+    this.searchText$ = this.store.select(selectGlobalSearchFilterText);
+    // this.searchingPhrase$ = this.store.pipe(select(selectGlobalSearchFilterText));
     this.changeValueSubject = new Subject<string>();
     this.changeValueSubject
       .pipe(
         debounceTime(this.debounceTime),
         distinctUntilChanged())
       .subscribe((value: string) => {
-        this.store.dispatch(updateSearch({filter: value}));
+        this.store.dispatch(updateSearch({searchedMovie: value}));
         this.movieTitle = value;
       });
   }
