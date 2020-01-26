@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
-import {catchError, filter, map} from 'rxjs/operators';
-import {SearchMovie} from "./models/searchMovie";
+import {catchError} from 'rxjs/operators';
+import {SearchMovie} from './models/searchMovie';
 
 @Injectable({
   providedIn: 'root'
@@ -11,15 +11,6 @@ export class MoviesHttpService {
   baseUrl = 'http://www.omdbapi.com/?apikey=305ce001&';
 
   constructor(private http: HttpClient) { }
-
-  // getAlbums() {
-  //   return this.http.get<any>('http://www.omdbapi.com/?apikey=305ce001&s=batman')
-  //     .subscribe((res) => {
-  //       console.log(res);
-  //
-  //       return res;
-  //   });
-  // }
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {

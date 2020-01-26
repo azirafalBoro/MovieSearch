@@ -7,6 +7,6 @@ export enum MovieSearchActionTypes {
   loadResults = '[Search Movie Change] Load Results'
 }
 
-export const updateSearch = createAction(MovieSearchActionTypes.updateSearch, props<{ searchedMovie: string }>());
+export const updateSearch = createAction(MovieSearchActionTypes.updateSearch, props<{ searchedMovie: string,  movieLoaded: boolean}>());
 export const updateResult = createAction(MovieSearchActionTypes.updateResult, props<{ result: SearchMovie }>());
 export const loadResults = createAction(MovieSearchActionTypes.loadResults);

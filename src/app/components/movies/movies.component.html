@@ -1,7 +1,4 @@
 <h1>Find Movie</h1>
-<ng-container *ngIf="searchText$ | async as data"
->{{data}}
-</ng-container>
 <div></div>
 <span class="ui-float-label">
 <!--    <input #searchInput-->
@@ -23,5 +20,3 @@
 <!--        <label for="input">Movie Title</label>-->
 </span>
 <app-movies-result-tables [movieTitle]="movieTitle"></app-movies-result-tables>
-<!--<app-movie-details></app-movie-details>-->
-

@@ -3,7 +3,7 @@ import {globalSearchFeatureKey, MovieSearchFilterState} from './movies.reducer';
 
 export const selectGlobalSearchFilter = createFeatureSelector<MovieSearchFilterState>(globalSearchFeatureKey);
 
-export const selectGlobalSearchFilterText = createSelector(selectGlobalSearchFilter,
+export const selectSearchedMovieTitle = createSelector(selectGlobalSearchFilter,
   (paramSearch: MovieSearchFilterState)  => paramSearch.filterByName);
 
 export const selectMovieResult = createSelector(selectGlobalSearchFilter,
@@ -11,3 +11,10 @@ export const selectMovieResult = createSelector(selectGlobalSearchFilter,
 
 export const areMovieLoaded = createSelector(selectGlobalSearchFilter,
   (paramSearch: MovieSearchFilterState)  => paramSearch.movieLoaded);
+
+export const selectMovieTitle = createSelector(
+  selectSearchedMovieTitle,
+  (parameterRelationErrors): string => {
+    return parameterRelationErrors;
+  }
+);

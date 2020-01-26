@@ -5,10 +5,9 @@ import {
   OnInit,
 } from '@angular/core';
 import {Observable, Subject} from 'rxjs';
-import {Router} from '@angular/router';
 import { Store} from '@ngrx/store';
 import {updateSearch} from '../../movies.actions';
-import {selectGlobalSearchFilterText} from '../../movie.selectors';
+import {selectSearchedMovieTitle} from '../../movie.selectors';
 
 @Component({
   selector: 'app-movies',
@@ -21,25 +20,19 @@ export class MoviesComponent implements OnInit, OnDestroy {
   debounceTime = 400;
   changeValueSubject: Subject<string>;
 
-  // @ViewChild('searchInput', {static: false}) input: ElementRef;
-
-  constructor(
-    private readonly store: Store<{}>,
-    private readonly router: Router) {
-    // this.searchText$ = store.pipe(select('filterByName'));
+  constructor(private readonly store: Store<{}>) {
   }
 
 
   ngOnInit() {
-    this.searchText$ = this.store.select(selectGlobalSearchFilterText);
-    // this.searchingPhrase$ = this.store.pipe(select(selectGlobalSearchFilterText));
+    this.searchText$ = this.store.select(selectSearchedMovieTitle);
     this.changeValueSubject = new Subject<string>();
     this.changeValueSubject
       .pipe(
         debounceTime(this.debounceTime),
         distinctUntilChanged())
       .subscribe((value: string) => {
-        this.store.dispatch(updateSearch({searchedMovie: value}));
+        this.store.dispatch(updateSearch({searchedMovie: value , movieLoaded: false}));
         this.movieTitle = value;
       });
   }
@@ -51,16 +44,5 @@ export class MoviesComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.changeValueSubject.complete();
   }
-
-  // ngAfterViewInit(): void {
-  //   fromEvent<any>(this.input.nativeElement, 'keyup')
-  //     .pipe(
-  //       map(event => event.target.value),
-  //       debounceTime(this.debounceTime),
-  //       distinctUntilChanged()
-  //     ).subscribe((value: string) => {
-  //     this.movieTitle = value;
-  //   });
-  // }
 
 }

@@ -30,15 +30,9 @@ export const globalSearchFeatureKey = 'searchedMovie';
 
 export const movieReducer = createReducer(
   initialState,
-  // on(updateSearch, (state: MovieSearchFilterState, {searchedMovie}): MovieSearchFilterState => {
-  //   return {...state, filterByName: searchedMovie};
-  // }),
   on(updateSearch, (state: MovieSearchFilterState, action): MovieSearchFilterState => ({
-    ...state, filterByName: action.searchedMovie
+    ...state, filterByName: action.searchedMovie, movieLoaded: action.movieLoaded
   })),
-  // on(updateResult, (state: MovieSearchFilterState, {searchedMovie}): MovieSearchFilterState => {
-  //   return {...state, result: searchedMovie};
-  // }),
   on(updateResult, (state: MovieSearchFilterState, action): MovieSearchFilterState => ({
     ...state, result: action.result, movieLoaded: true
   }))

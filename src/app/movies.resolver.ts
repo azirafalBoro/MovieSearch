@@ -14,11 +14,12 @@ export class MoviesResolver implements Resolve<any> {
   constructor(private store: Store<{}>) {}
 
   resolve(route: ActivatedRouteSnapshot,
-          state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
+          state: RouterStateSnapshot): Observable<any> {
     return this.store
       .pipe(
         select(areMovieLoaded),
         tap(movieLoaded => {
+          console.log('Resolver!!!!');
           if (!this.loading && !movieLoaded) {
             this.loading = true;
             this.store.dispatch(loadResults());

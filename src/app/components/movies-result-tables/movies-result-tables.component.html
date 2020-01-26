@@ -1,12 +1,9 @@
-<ng-container *ngIf="movieResult$ | async as data">{{data.Search}}
-</ng-container>
-<ng-container *ngIf="moviesObservable$ | async as result">
+<ng-container *ngIf="movieResult$ | async as result">
   <h2 >Searched movie collection</h2>
-<!--    <ng-container *ngIf="movies.Search && movies.Search.length > 0; else elseBlock">-->
       <p-table
         selectionMode="single"
         [(selection)]="selectedMovie"
-        [value]="result"
+        [value]="result.Search"
         [columns]="cols"
         [scrollable]="true"
         (onRowSelect)="onRowSelect($event)"
@@ -34,18 +31,11 @@
               </ng-container>
               <ng-container *ngIf="col.field !=='Poster'">
                 {{movie[col.field]}}
-<!--                <a [routerLink]="['details']" class="btn btn-success btn-lg">{{movie[col.field]}}</a>-->
               </ng-container>
             </td>
           </tr>
         </ng-template>
-<!--        <ng-template pTemplate="summary">-->
-<!--          <div style="text-align: left">-->
-<!--            Selected Car: {{selectedMovie ? selectedMovie.imdbID : 'none'}}-->
-<!--          </div>-->
-<!--        </ng-template>-->
       </p-table>
-<!--    </ng-container>-->
   </ng-container>
 <ng-template #elseBlock>No results was found. Please set movie title in search box.</ng-template>
 <ng-template #emptyPoster>
