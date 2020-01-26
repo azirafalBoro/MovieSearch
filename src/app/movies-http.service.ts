@@ -7,7 +7,7 @@ import {SearchMovie} from "./models/searchMovie";
 @Injectable({
   providedIn: 'root'
 })
-export class MoviesService {
+export class MoviesHttpService {
   baseUrl = 'http://www.omdbapi.com/?apikey=305ce001&';
 
   constructor(private http: HttpClient) { }

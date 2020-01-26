@@ -2,7 +2,7 @@ import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@an
 import {Observable, Subject} from 'rxjs';
 import {map, takeUntil, tap} from 'rxjs/operators';
 
-import {MoviesService} from '../../movies.service';
+import {MoviesHttpService} from '../../movies-http.service';
 import {SearchMovie} from '../../models/searchMovie';
 import {Movie} from '../../models/movie';
 import { Router } from '@angular/router';
@@ -20,16 +20,19 @@ export class MoviesResultTablesComponent implements OnInit, OnChanges, OnDestroy
   private moviesObservable$: Observable<Movie[]> ;
   private movieResult$: Observable<SearchMovie>;
   // private moviesObservable$: Observable<SearchMovie> ;
+  actualResult: SearchMovie;
   cols: any[];
   selectedMovie: Movie;
   @Input() movieTitle: string;
-  constructor(private moviesService: MoviesService,
+  constructor(private moviesService: MoviesHttpService,
               private router: Router,
-              private readonly store: Store<{}>) { }
+              private readonly store: Store<{}>) {
+    this.movieResult$ = this.store.select(selectMovieResult);
+    console.log('constructor');
+  }
 
   ngOnInit() {
-    this.movieResult$ = this.store.select(selectMovieResult);
-
+    console.log('ngOnInit');
     // this.movieResult$.subscribe();
     // this.moviesObservable$ = this.moviesService.getMoviesByTitle(this.movieTitle)
     //   .pipe(
@@ -47,16 +50,29 @@ export class MoviesResultTablesComponent implements OnInit, OnChanges, OnDestroy
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.movieTitle !== '') {
-      this.moviesObservable$ = this.moviesService.getMoviesByTitle(this.movieTitle)
-        .pipe(
-          takeUntil(this.ngUnsubscribe),
-          map((foundMovie: SearchMovie) => {
-            this.store.dispatch(updateResult({result: foundMovie}));
-            return foundMovie.Search;
-          })
-        );
-    }
+    console.log('ngOnChanges');
+    this.store.select(selectGlobalSearchFilterText).subscribe(
+      title => {
+        this.movieTitle = title;
+      }
+    );
+
+    // this.movieResult$.subscribe(
+    //   result => this.actualResult = result
+    // );
+
+    // if (this.actualResult && this.actualResult.Search) {
+    //   this.moviesObservable$ = this.actualResult.Search;
+    // } else {
+    this.moviesObservable$ = this.moviesService.getMoviesByTitle(this.movieTitle)
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        map((foundMovie: SearchMovie) => {
+          this.store.dispatch(updateResult({result: foundMovie}));
+          return foundMovie.Search;
+        })
+      );
+    // }
   }
 
   ngOnDestroy(): void {

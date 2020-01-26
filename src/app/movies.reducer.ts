@@ -7,6 +7,7 @@ export interface MovieSearchFilterState {
   // itemsPerPage: number;
   // sortedBy: ParameterSearchSorting
   // sortOrder: 'desc' | 'asc'
+  movieLoaded: boolean;
   filterByName: string;
   result: SearchMovie;
   // items: SearchParameterResult[]
@@ -18,6 +19,7 @@ export const initialState: MovieSearchFilterState = {
   // itemsPerPage: 17,
   // sortedBy: 'parameterFullName',
   // sortOrder: 'asc',
+  movieLoaded: false,
   filterByName: '',
   result: undefined
   // items: [],
@@ -38,7 +40,7 @@ export const movieReducer = createReducer(
   //   return {...state, result: searchedMovie};
   // }),
   on(updateResult, (state: MovieSearchFilterState, action): MovieSearchFilterState => ({
-    ...state, result: action.result
+    ...state, result: action.result, movieLoaded: true
   }))
 );
 

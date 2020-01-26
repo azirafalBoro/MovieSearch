@@ -1,12 +1,12 @@
 <ng-container *ngIf="movieResult$ | async as data">{{data.Search}}
 </ng-container>
-<ng-container *ngIf="moviesObservable$ | async">
+<ng-container *ngIf="moviesObservable$ | async as result">
   <h2 >Searched movie collection</h2>
 <!--    <ng-container *ngIf="movies.Search && movies.Search.length > 0; else elseBlock">-->
       <p-table
         selectionMode="single"
         [(selection)]="selectedMovie"
-        [value]="moviesObservable$ | async"
+        [value]="result"
         [columns]="cols"
         [scrollable]="true"
         (onRowSelect)="onRowSelect($event)"

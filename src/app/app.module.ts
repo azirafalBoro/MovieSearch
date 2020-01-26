@@ -15,6 +15,9 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { reducer} from './movies.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import {MoviesResolver} from './movies.resolver';
+import {EffectsModule} from "@ngrx/effects";
+import {MoviesEffects} from "./movies.effects";
 
 @NgModule({
   declarations: [
@@ -37,8 +40,9 @@ import { environment } from '../environments/environment';
     ProgressBarModule,
     StoreModule.forRoot({searchedMovie: reducer}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    EffectsModule.forRoot([MoviesEffects])
   ],
-  providers: [],
+  providers: [MoviesResolver],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
