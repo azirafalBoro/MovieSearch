@@ -4,7 +4,7 @@ import {MoviesHttpService} from './movies-http.service';
 import {concatMap, map, withLatestFrom} from 'rxjs/operators';
 import {MovieSearchActionTypes, updateResult} from './movies.actions';
 import {Store} from '@ngrx/store';
-import {selectSearchedMovieTitle} from './movie.selectors';
+import {selectPageNumber, selectSearchedMovieTitle} from './movie.selectors';
 
 
 @Injectable()
@@ -18,6 +18,36 @@ export class MoviesEffects {
         console.log('title', title);
 
         return this.moviesHttpService.getMoviesByTitle(title);
+      }),
+      map(movies => updateResult({result: movies}))
+    )
+  );
+
+  // LoadResultsPage$ = createEffect(
+  //   () => this.actions$.pipe(
+  //     ofType(MovieSearchActionTypes.loadResultsPage),
+  //     withLatestFrom(this.store.select(selectSearchedMovieTitle)),
+  //     concatMap(([page, title]) => {
+  //       const {pageNumber} = page;
+  //       console.log('title', title, 'page', pageNumber);
+  //
+  //       return this.moviesHttpService.getMoviesByTitleNextPage(title, pageNumber);
+  //     }),
+  //     map(movies => updateResult({result: movies}))
+  //   )
+  // );
+
+  LoadResultsPage$ = createEffect(
+    () => this.actions$.pipe(
+      ofType(MovieSearchActionTypes.loadResultsPage),
+      withLatestFrom(
+        this.store.select(selectPageNumber),
+        this.store.select(selectSearchedMovieTitle)),
+      concatMap(([, page, title]) => {
+        // const {pageNumber} = page;
+        console.log('title', title, 'page', page);
+
+        return this.moviesHttpService.getMoviesByTitleNextPage(title, page.toString());
       }),
       map(movies => updateResult({result: movies}))
     )

@@ -6,7 +6,14 @@ import {StoreModule} from '@ngrx/store';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MoviesComponent } from './components/movies/movies.component';
-import {CarouselModule, ChipsModule, InputTextModule, ProgressBarModule, RatingModule} from 'primeng/primeng';
+import {
+  CarouselModule,
+  ChipsModule,
+  InputTextModule,
+  PaginatorModule,
+  ProgressBarModule,
+  RatingModule
+} from 'primeng/primeng';
 import { MoviesResultTablesComponent } from './components/movies-result-tables/movies-result-tables.component';
 import {FormsModule} from '@angular/forms';
 import {TableModule} from 'primeng/table';
@@ -18,6 +25,7 @@ import { environment } from '../environments/environment';
 import {MoviesResolver} from './movies.resolver';
 import {EffectsModule} from "@ngrx/effects";
 import {MoviesEffects} from "./movies.effects";
+import {TablePaginationModule} from "./components/table-pagination/table-pagination.module";
 
 @NgModule({
   declarations: [
@@ -39,8 +47,10 @@ import {MoviesEffects} from "./movies.effects";
     RatingModule,
     ProgressBarModule,
     StoreModule.forRoot({searchedMovie: reducer}),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([MoviesEffects])
+    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
+    EffectsModule.forRoot([MoviesEffects]),
+    TablePaginationModule,
+    PaginatorModule
   ],
   providers: [MoviesResolver],
   bootstrap: [AppComponent]

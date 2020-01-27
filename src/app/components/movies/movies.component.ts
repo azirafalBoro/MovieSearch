@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import { Store} from '@ngrx/store';
-import {updateSearch} from '../../movies.actions';
+import {loadResults, updateSearch} from '../../movies.actions';
 import {selectSearchedMovieTitle} from '../../movie.selectors';
 
 @Component({
@@ -33,7 +33,8 @@ export class MoviesComponent implements OnInit, OnDestroy {
         distinctUntilChanged())
       .subscribe((value: string) => {
         this.store.dispatch(updateSearch({searchedMovie: value , movieLoaded: false}));
-        this.movieTitle = value;
+        this.store.dispatch(loadResults());
+        // this.movieTitle = value;
       });
   }
 

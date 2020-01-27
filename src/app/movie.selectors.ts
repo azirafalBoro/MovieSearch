@@ -6,15 +6,21 @@ export const selectGlobalSearchFilter = createFeatureSelector<MovieSearchFilterS
 export const selectSearchedMovieTitle = createSelector(selectGlobalSearchFilter,
   (paramSearch: MovieSearchFilterState)  => paramSearch.filterByName);
 
-export const selectMovieResult = createSelector(selectGlobalSearchFilter,
+// export const selectMovieTitle = createSelector(
+//   selectSearchedMovieTitle,
+//   (parameterRelationErrors): string => {
+//     return parameterRelationErrors;
+//   }
+// );
+
+export const selectMovieResult = createSelector( selectGlobalSearchFilter,
   (paramSearch: MovieSearchFilterState)  => paramSearch.result);
+
+export const selectPageRange = createSelector( selectGlobalSearchFilter,
+  (paramSearch: MovieSearchFilterState)  => paramSearch.itemsPerPage);
+
+export const selectPageNumber = createSelector( selectGlobalSearchFilter,
+  (paramSearch: MovieSearchFilterState)  => paramSearch.pageNumber);
 
 export const areMovieLoaded = createSelector(selectGlobalSearchFilter,
   (paramSearch: MovieSearchFilterState)  => paramSearch.movieLoaded);
-
-export const selectMovieTitle = createSelector(
-  selectSearchedMovieTitle,
-  (parameterRelationErrors): string => {
-    return parameterRelationErrors;
-  }
-);

@@ -1,9 +1,10 @@
-<ng-container *ngIf="movieResult$ | async as result">
-  <h2 >Searched movie collection</h2>
+<ng-container *ngIf="(movieResult$ | async) as data">
+  <h2>Searched movie collection</h2>
+<!--  <p-paginator *ngIf="data.totalResults > 10" [rows]="10" [totalRecords]="data.totalResults" (onPageChange)="loadMovie($event)"></p-paginator>-->
       <p-table
         selectionMode="single"
         [(selection)]="selectedMovie"
-        [value]="result.Search"
+        [value]="data.Search"
         [columns]="cols"
         [scrollable]="true"
         (onRowSelect)="onRowSelect($event)"
@@ -24,18 +25,25 @@
         </ng-template>
         <ng-template pTemplate="body" let-movie let-columns="columns">
           <tr [pSelectableRow]="movie">
-            <td *ngFor="let col of columns">
-              <ng-container *ngIf="col.field ==='Poster'">
-                <img *ngIf="movie[col.field] !== 'N/A'; else emptyPoster"
-                     [src]="movie[col.field]" alt="">
-              </ng-container>
-              <ng-container *ngIf="col.field !=='Poster'">
-                {{movie[col.field]}}
-              </ng-container>
+            <td>
+              <img *ngIf="movie.Poster !== 'N/A'; else emptyPoster"
+                                   [src]="movie.Poster" alt="">
             </td>
+            <td>{{movie.Title}}</td>
+            <td class="movie-year">{{movie.Year}}</td>
+<!--            <td *ngFor="let col of columns">-->
+<!--              <ng-container *ngIf="col.field ==='Poster'">-->
+<!--                <img *ngIf="movie[col.field] !== 'N/A'; else emptyPoster"-->
+<!--                     [src]="movie[col.field]" alt="">-->
+<!--              </ng-container>-->
+<!--              <ng-container *ngIf="col.field !=='Poster'">-->
+<!--                {{movie[col.field]}}-->
+<!--              </ng-container>-->
+<!--            </td>-->
           </tr>
         </ng-template>
       </p-table>
+  <p-paginator *ngIf="data.totalResults > 10" rows="10" [first]="pageRange$ | async" [totalRecords]="data.totalResults" (onPageChange)="loadMovie($event)"></p-paginator>
   </ng-container>
 <ng-template #elseBlock>No results was found. Please set movie title in search box.</ng-template>
 <ng-template #emptyPoster>

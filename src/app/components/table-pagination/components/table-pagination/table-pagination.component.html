@@ -1,0 +1,40 @@
+<div class="pagination-container">
+    <form [formGroup]="form" class="form-container">
+        <button pButton type="button"
+                (click)="goToFirstPage()"
+                [disabled]="isFirstPage()"
+                title="First page"
+                icon="mdi mdi-page-first">
+        </button>
+        <button pButton type="button"
+                class="pagination-previous"
+                (click)="goToPreviousPage()"
+                [disabled]="isFirstPage()"
+                title="Previous page"
+                icon="mdi mdi-chevron-left">
+        </button>
+        <div class="pagination-page-number">
+            <div class="pagination-current-page">
+                <input type="number" pInputText step="1"
+                       class="current-page-input"
+                       formControlName="currentPage"
+                       (change)="onCurrentPageChange()">
+            </div>
+            / {{ totalNumberOfPages }}
+        </div>
+        <button pButton type="button"
+                class="pagination-next"
+                (click)="goToNextPage()"
+                [disabled]="isLastPage()"
+                title="Next page"
+                icon="mdi mdi-chevron-right">
+        </button>
+        <button pButton type="button"
+                class="first-last-page"
+                (click)="goToLastPage()"
+                [disabled]="isLastPage()"
+                title="Last page"
+                icon="mdi mdi-page-last">
+        </button>
+    </form>
+</div>

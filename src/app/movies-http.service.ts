@@ -31,6 +31,12 @@ export class MoviesHttpService {
     );
   }
 
+  getMoviesByTitleNextPage(title: string, page: string): Observable<SearchMovie> {
+    return this.http.get<SearchMovie>(this.baseUrl + 's=' + title + '&page=' + page).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   getMovieById(id: string) {
     return this.http.get<any>(this.baseUrl + 'i=' + id).pipe(
       catchError(this.handleError)
