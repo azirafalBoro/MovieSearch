@@ -4,7 +4,7 @@ import {MoviesHttpService} from './movies-http.service';
 import {concatMap, map, withLatestFrom} from 'rxjs/operators';
 import {MovieSearchActionTypes, updateResult} from './movies.actions';
 import {Store} from '@ngrx/store';
-import {selectPageNumber, selectSearchedMovieTitle} from './movie.selectors';
+import {selectPageNumber, selectSearchedMovieTitle, selectSearchedMovieYear} from './movie.selectors';
 
 
 @Injectable()
@@ -13,41 +13,40 @@ export class MoviesEffects {
   LoadResults$ = createEffect(
     () => this.actions$.pipe(
       ofType(MovieSearchActionTypes.loadResults),
-      withLatestFrom(this.store.select(selectSearchedMovieTitle)),
-      concatMap(([, title]) => {
-        console.log('title', title);
+      withLatestFrom(
+        this.store.select(selectSearchedMovieTitle),
+        this.store.select(selectSearchedMovieYear)
+      ),
+      concatMap(([, title, year]) => {
+        console.log('title', title, 'year', year);
 
-        return this.moviesHttpService.getMoviesByTitle(title);
+        if (year === '') {
+          return this.moviesHttpService.getMoviesByTitle(title);
+        } else {
+          return this.moviesHttpService.getMoviesByTitleAndYear(title, year);
+        }
       }),
       map(movies => updateResult({result: movies}))
     )
   );
-
-  // LoadResultsPage$ = createEffect(
-  //   () => this.actions$.pipe(
-  //     ofType(MovieSearchActionTypes.loadResultsPage),
-  //     withLatestFrom(this.store.select(selectSearchedMovieTitle)),
-  //     concatMap(([page, title]) => {
-  //       const {pageNumber} = page;
-  //       console.log('title', title, 'page', pageNumber);
-  //
-  //       return this.moviesHttpService.getMoviesByTitleNextPage(title, pageNumber);
-  //     }),
-  //     map(movies => updateResult({result: movies}))
-  //   )
-  // );
 
   LoadResultsPage$ = createEffect(
     () => this.actions$.pipe(
       ofType(MovieSearchActionTypes.loadResultsPage),
       withLatestFrom(
         this.store.select(selectPageNumber),
-        this.store.select(selectSearchedMovieTitle)),
-      concatMap(([, page, title]) => {
-        // const {pageNumber} = page;
-        console.log('title', title, 'page', page);
+        this.store.select(selectSearchedMovieTitle),
+        this.store.select(selectSearchedMovieYear)
+      ),
+      concatMap(([, page, title, year]) => {
+        console.log('title', title, 'year', year, 'page', page);
 
-        return this.moviesHttpService.getMoviesByTitleNextPage(title, page.toString());
+        if (year === '') {
+          return this.moviesHttpService.getMoviesByTitleNextPage(title, page.toString());
+        } else {
+          return this.moviesHttpService.getMoviesByTitleAndYearNextPage(title, year, page.toString());
+        }
+
       }),
       map(movies => updateResult({result: movies}))
     )

@@ -23,9 +23,8 @@ import { reducer} from './movies.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import {MoviesResolver} from './movies.resolver';
-import {EffectsModule} from "@ngrx/effects";
-import {MoviesEffects} from "./movies.effects";
-import {TablePaginationModule} from "./components/table-pagination/table-pagination.module";
+import {EffectsModule} from '@ngrx/effects';
+import {MoviesEffects} from './movies.effects';
 
 @NgModule({
   declarations: [
@@ -49,7 +48,6 @@ import {TablePaginationModule} from "./components/table-pagination/table-paginat
     StoreModule.forRoot({searchedMovie: reducer}),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
     EffectsModule.forRoot([MoviesEffects]),
-    TablePaginationModule,
     PaginatorModule
   ],
   providers: [MoviesResolver],

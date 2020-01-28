@@ -17,8 +17,8 @@ export class MoviesHttpService {
       console.error('An error occurred:', error.error.message);
     } else {
       console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.error}`);
+        'Backend returned code ${error.status}, ' +
+        'body was: ${error.error}');
     }
 
     return throwError(
@@ -33,6 +33,18 @@ export class MoviesHttpService {
 
   getMoviesByTitleNextPage(title: string, page: string): Observable<SearchMovie> {
     return this.http.get<SearchMovie>(this.baseUrl + 's=' + title + '&page=' + page).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getMoviesByTitleAndYear(title: string, year: string): Observable<SearchMovie> {
+    return this.http.get<SearchMovie>(this.baseUrl + 's=' + title + '&y=' + year).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getMoviesByTitleAndYearNextPage(title: string, year: string, page: string): Observable<SearchMovie> {
+    return this.http.get<SearchMovie>(this.baseUrl + 's=' + title + '&y=' + year + '&page=' + page).pipe(
       catchError(this.handleError)
     );
   }

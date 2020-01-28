@@ -1,0 +1,64 @@
+<ng-container *ngIf="movieObservable$ | async as movie">
+  <div class="main-information">
+    <div *ngIf="movie.Poster !== 'N/A'; else emptyPoster"
+      class="zoomBOut">
+      <img class="zoomBIn"
+        alt=""
+        src="{{movie.Poster}}">
+    </div>
+    <div class="movie-information">
+      <div class="movie-title">{{movie.Title}}</div>
+      <div class="details-info">
+        <ng-container *ngFor="let info of movieIinformation">
+          <span *ngIf="movie[info] !== 'N/A'">
+            {{ info }}: {{ movie[info] }}
+          </span>
+        </ng-container>
+      </div>
+      <div class="movie-director">Reżyser</div>
+      <div class="image-with-label">
+        <img
+          src="https://mdn.mozillademos.org/files/5399/gallery_1.jpg"
+          alt="{{movie.Director}}">
+        <span>{{movie.Director}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="cast">
+    Obsada
+  </div>
+  <p-carousel
+    [value]="movie.Actors.split(',')"
+    [numVisible]="actorLimit"
+    [numScroll]="actorLimit"
+    styleClass="custom-carousel"
+    [responsiveOptions]="responsiveOptions">
+    <ng-template let-actor pTemplate="item">
+        <img src="https://mdn.mozillademos.org/files/5399/gallery_1.jpg"
+             alt=""/>
+        <div class="car-title">{{actor}}</div>
+    </ng-template>
+  </p-carousel>
+  <div class="cast">
+    Ocena
+  </div>
+  <div class="rating-panel">
+    <span>IMDb:</span>
+    <p-rating [ngModel]="getRate(movie, 'Internet Movie Database')" readonly="true" stars="10" [cancel]="false"></p-rating>
+    <span></span>
+    <ng-container *ngIf="getRate(movie, 'Rotten Tomatoes') as rTRate">
+      <span>Rotten Tomatoes:</span>
+      <p-progressBar [value]="rTRate" [showValue]="false"></p-progressBar>
+      <span>{{rTRate}}%</span>
+    </ng-container>
+    <ng-container *ngIf="getRate(movie, 'Rotten Tomatoes') as mRate">
+      <span>Metacritic:</span>
+      <p-progressBar [value]="mRate" [showValue]="false"></p-progressBar>
+      <span>{{mRate}}/100</span>
+    </ng-container>
+  </div>
+</ng-container>
+<ng-template #emptyPoster>
+  <img src="https://toptvseries.org/wp-content/uploads/2019/08/noposter-.jpg"
+        alt="">
+</ng-template>

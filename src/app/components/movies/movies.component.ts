@@ -1,4 +1,4 @@
-import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import {
   Component,
   OnDestroy,
@@ -6,8 +6,8 @@ import {
 } from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import { Store} from '@ngrx/store';
-import {loadResults, updateSearch} from '../../movies.actions';
-import {selectSearchedMovieTitle} from '../../movie.selectors';
+import {loadResults, updateSearch, updateYear} from '../../movies.actions';
+import {selectSearchedMovieTitle, selectSearchedMovieYear} from '../../movie.selectors';
 
 @Component({
   selector: 'app-movies',
@@ -16,9 +16,9 @@ import {selectSearchedMovieTitle} from '../../movie.selectors';
 })
 export class MoviesComponent implements OnInit, OnDestroy {
   searchText$: Observable<string>;
-  movieTitle = '';
+  searchYear$: Observable<string>;
   debounceTime = 400;
-  changeValueSubject: Subject<string>;
+  changeValueSubject: Subject<[string, string]>;
 
   constructor(private readonly store: Store<{}>) {
   }
@@ -26,20 +26,28 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.searchText$ = this.store.select(selectSearchedMovieTitle);
-    this.changeValueSubject = new Subject<string>();
+    this.searchYear$ = this.store.select(selectSearchedMovieYear);
+    this.changeValueSubject = new Subject<[string, string]>();
     this.changeValueSubject
       .pipe(
         debounceTime(this.debounceTime),
         distinctUntilChanged())
-      .subscribe((value: string) => {
-        this.store.dispatch(updateSearch({searchedMovie: value , movieLoaded: false}));
+      .subscribe((data: any) => {
+        if (data[0] === 'title') {
+          this.store.dispatch(updateSearch({searchedMovie: data[1] , movieLoaded: false}));
+        } else {
+          this.store.dispatch(updateYear({searchedYear: data[1] , movieLoaded: false}));
+        }
         this.store.dispatch(loadResults());
-        // this.movieTitle = value;
       });
   }
 
-  onValueChange(event): void {
-    this.changeValueSubject.next(event.target.value);
+  onTitleValueChange(event): void {
+    this.changeValueSubject.next(['title', event.target.value]);
+  }
+
+  onYearValueChange(event): void {
+    this.changeValueSubject.next(['year', event.target.value]);
   }
 
   ngOnDestroy(): void {

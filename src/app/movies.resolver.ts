@@ -19,7 +19,6 @@ export class MoviesResolver implements Resolve<any> {
       .pipe(
         select(areMovieLoaded),
         tap(movieLoaded => {
-          console.log('Resolver!!!!');
           if (!this.loading && !movieLoaded) {
             this.loading = true;
             this.store.dispatch(loadResults());

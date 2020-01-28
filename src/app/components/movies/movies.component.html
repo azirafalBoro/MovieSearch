@@ -1,22 +1,23 @@
 <h1>Find Movie</h1>
 <div></div>
-<span class="ui-float-label">
-<!--    <input #searchInput-->
-<!--           id="float-input"-->
-<!--           type="text"-->
-<!--           size="120"-->
-<!--           pInputText-->
-<!--           (keyup)="onValueChange($event)">-->
-<!--    <label for="float-input">Movie Title</label>-->
-        <input
-          id="input"
-          type="text"
-          size="120"
-          pInputText
-          [value]="searchText$ | async"
-          (keyup)="onValueChange($event)"
-          >
-<!--        <span id="text">{{text}}</span>-->
-<!--        <label for="input">Movie Title</label>-->
-</span>
+  <div class="filter-inputs">
+  <input
+    id="title"
+    type="text"
+    size="40"
+    pInputText
+    placeholder="Title"
+    [value]="searchText$ | async"
+    (keyup)="onTitleValueChange($event)"
+  >
+  <input
+    id="year"
+    type="text"
+    size="40"
+    pInputText
+    placeholder="Year"
+    [value]="searchYear$ | async"
+    (keyup)="onYearValueChange($event)"
+  >
+  </div>
 <app-movies-result-tables></app-movies-result-tables>
