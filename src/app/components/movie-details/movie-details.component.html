@@ -15,7 +15,7 @@
           </span>
         </ng-container>
       </div>
-      <div class="movie-director">Reżyser</div>
+      <div class="movie-director">Director</div>
       <div class="image-with-label">
         <img
           src="https://mdn.mozillademos.org/files/5399/gallery_1.jpg"
@@ -24,8 +24,8 @@
       </div>
     </div>
   </div>
-  <div class="cast">
-    Obsada
+  <div class="text-with-border">
+    Cast
   </div>
   <p-carousel
     [value]="movie.Actors.split(',')"
@@ -39,8 +39,8 @@
         <div class="car-title">{{actor}}</div>
     </ng-template>
   </p-carousel>
-  <div class="cast">
-    Ocena
+  <div class="text-with-border">
+    Ratings
   </div>
   <div class="rating-panel">
     <span>IMDb:</span>

@@ -7,7 +7,11 @@ import {Movie} from '../../models/movie';
 import { Router } from '@angular/router';
 import { loadResultsPage, updatePage } from '../../movies.actions';
 import {select, Store} from '@ngrx/store';
-import {selectMovieResult, selectPageRange} from '../../movie.selectors';
+import {
+  selectAllMovieWithDetails, selectMovieResult,
+  selectPageRange,
+} from '../../movie.selectors';
+import {movieDetails} from '../../models/movieDetails';
 
 @Component({
   selector: 'app-movies-result-tables',
@@ -16,7 +20,8 @@ import {selectMovieResult, selectPageRange} from '../../movie.selectors';
 })
 export class MoviesResultTablesComponent implements OnInit, OnDestroy {
   private readonly ngUnsubscribe: Subject<void> = new Subject<void>();
-  private movieResult$: Observable<SearchMovie>;
+  private movieResponse$: Observable<SearchMovie>;
+  private moviesDetails$: Observable<movieDetails[]>;
   private pageRange$: Observable<number>;
   cols: any[];
 
@@ -24,11 +29,12 @@ export class MoviesResultTablesComponent implements OnInit, OnDestroy {
   constructor(private moviesService: MoviesHttpService,
               private router: Router,
               private readonly store: Store<{}>) {
-    this.movieResult$ = this.store.pipe(select(selectMovieResult));
+    this.moviesDetails$ = this.store.pipe(select(selectAllMovieWithDetails));
+    this.movieResponse$ = this.store.pipe(select(selectMovieResult));
   }
 
   ngOnInit() {
-    this.movieResult$ = this.store.pipe(select(selectMovieResult));
+    this.moviesDetails$ = this.store.pipe(select(selectAllMovieWithDetails));
     this.pageRange$ = this.store.pipe(select(selectPageRange));
     this.cols = [
       { field: 'Poster', header: 'Poster' },

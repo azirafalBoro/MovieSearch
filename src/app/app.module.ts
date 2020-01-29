@@ -25,6 +25,7 @@ import { environment } from '../environments/environment';
 import {MoviesResolver} from './movies.resolver';
 import {EffectsModule} from '@ngrx/effects';
 import {MoviesEffects} from './movies.effects';
+import {detailsReducer} from './movies-details.reducer';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,7 @@ import {MoviesEffects} from './movies.effects';
     CarouselModule,
     RatingModule,
     ProgressBarModule,
-    StoreModule.forRoot({searchedMovie: reducer}),
+    StoreModule.forRoot({searchedMovie: reducer, movieDetails: detailsReducer}),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
     EffectsModule.forRoot([MoviesEffects]),
     PaginatorModule

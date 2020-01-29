@@ -1,13 +1,13 @@
-<ng-container *ngIf="(movieResult$ | async) as data">
+<ng-container *ngIf="{ movies: moviesDetails$ | async, response: movieResponse$ | async } as data">
   <h2>Movies found:</h2>
       <p-table
         selectionMode="single"
         [(selection)]="selectedMovie"
-        [value]="data.Search"
+        [value]="data.movies"
         [columns]="cols"
         [scrollable]="true"
         (onRowSelect)="onRowSelect($event)"
-        dataKey="imdbID">
+        movieKey="imdbID">
         <ng-template pTemplate="header" let-columns>
           <tr>
             <th *ngFor="let col of columns">
@@ -27,15 +27,21 @@
             <td>
               <img *ngIf="movie.Poster !== 'N/A'; else emptyPoster"
                                    [src]="movie.Poster" alt="">
+              <div class="rating-poster">
+                <div class="bottom-right">
+                  <p-rating [ngModel]="1" readonly="true" stars="1" [cancel]="false"></p-rating>
+                  <span *ngIf="movie.imdbRating !== 'N/A'">{{movie.imdbRating}}</span>
+                  <span *ngIf="movie.imdbRating === 'N/A'">0.0</span>
+                </div>
+              </div>
             </td>
             <td>{{movie.Title}}</td>
             <td class="movie-year">{{movie.Year}}</td>
           </tr>
         </ng-template>
       </p-table>
-  <p-paginator *ngIf="data.totalResults > 10" rows="10" [first]="pageRange$ | async" [totalRecords]="data.totalResults" (onPageChange)="loadMovie($event)"></p-paginator>
+  <p-paginator *ngIf="data.response.totalResults > 10" rows="10" [first]="pageRange$ | async" [totalRecords]="data.response.totalResults" (onPageChange)="loadMovie($event)"></p-paginator>
   </ng-container>
-<!--<ng-template #elseBlock>No results was found. Please set movie title in search box.</ng-template>-->
 <ng-template #emptyPoster>
   <img src="https://toptvseries.org/wp-content/uploads/2019/08/noposter-.jpg"
        alt="">

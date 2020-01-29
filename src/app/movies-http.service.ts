@@ -3,6 +3,7 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {SearchMovie} from './models/searchMovie';
+import {movieDetails} from './models/movieDetails';
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +50,7 @@ export class MoviesHttpService {
     );
   }
 
-  getMovieById(id: string) {
+  getMovieById(id: string): Observable<movieDetails> {
     return this.http.get<any>(this.baseUrl + 'i=' + id).pipe(
       catchError(this.handleError)
     );

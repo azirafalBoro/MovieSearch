@@ -1,8 +1,12 @@
 import {Action, createReducer, on} from '@ngrx/store';
 import {updatePage, updateResult, updateSearch, updateYear} from './movies.actions';
 import {SearchMovie} from './models/searchMovie';
+import {movieDetails} from './models/movieDetails';
+import {createEntityAdapter} from '@ngrx/entity';
 
-export interface MovieSearchState {
+export const adapter = createEntityAdapter<movieDetails>();
+
+export interface MovieSearchState  {
   pageNumber: number;
   itemsPerPage: number;
   movieLoaded: boolean;
@@ -25,10 +29,10 @@ export const globalSearchFeatureKey = 'searchedMovie';
 export const movieReducer = createReducer(
   initialState,
   on(updateSearch, (state: MovieSearchState, action): MovieSearchState => ({
-    ...state, filterByName: action.searchedMovie, movieLoaded: action.movieLoaded
+    ...state, filterByName: action.searchedMovie, movieLoaded: action.movieLoaded, pageNumber: 1 , itemsPerPage: 0
   })),
   on(updateYear, (state: MovieSearchState, action): MovieSearchState => ({
-    ...state, filterByYear: action.searchedYear, movieLoaded: action.movieLoaded
+    ...state, filterByYear: action.searchedYear, movieLoaded: action.movieLoaded, pageNumber: 1 , itemsPerPage: 0
   })),
   on(updateResult, (state: MovieSearchState, action): MovieSearchState => ({
     ...state, result: action.result, movieLoaded: true

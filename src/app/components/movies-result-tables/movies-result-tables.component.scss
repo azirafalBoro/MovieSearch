@@ -21,3 +21,23 @@
   text-align: center;
   vertical-align: middle;
 }
+
+.rating-poster {
+  position: relative;
+  text-align: center;
+  color: white;
+
+}
+
+.bottom-right {
+  position: absolute;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 10px 34px;
+  grid-gap: 4px;
+  font-size: 16px;
+  bottom: 7px;
+  right: -3px;
+  background-color: gray;
+  opacity: 0.87;
+}

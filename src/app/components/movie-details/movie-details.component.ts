@@ -4,6 +4,8 @@ import {Observable, Subscription} from 'rxjs';
 
 import { MoviesHttpService } from '../../movies-http.service';
 import { movieDetails } from '../../models/movieDetails';
+import { Store} from '@ngrx/store';
+import {getMovieById} from '../../movie.selectors';
 
 @Component({
   selector: 'app-movie-details',
@@ -16,7 +18,8 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
   actorLimit: number;
 
   constructor(private moviesService: MoviesHttpService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private store: Store<{}>) {
     this.responsiveOptions = [
       {
         breakpoint: '1460px',
@@ -92,9 +95,7 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
         this.selectedMovie.id = params.id;
       }
     );
-    // tt0096895 Batman
-    // tt0100669 Spiderman N/A
-    this.movieObservable$ = this.moviesService.getMovieById(this.selectedMovie.id);
+    this.movieObservable$ = this.store.select(getMovieById(this.selectedMovie.id));
   }
 
   ngOnDestroy(): void {
